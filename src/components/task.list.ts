@@ -41,7 +41,6 @@ export class TaskList extends Component {
             document.querySelector('#resp') as HTMLInputElement
         ).value;
         TASKS.push(new Task(title, responsible));
-        console.log(TASKS);
         this.manageComponent();
     }
 }

@@ -37,7 +37,6 @@ export class TaskList extends Component {
             .value;
         const responsible = document.querySelector('#resp').value;
         TASKS.push(new Task(title, responsible));
-        console.log(TASKS);
         this.manageComponent();
     }
 }
