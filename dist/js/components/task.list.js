@@ -6,6 +6,7 @@ export class TaskList extends Component {
     constructor(selector) {
         super();
         this.selector = selector;
+        this.tasks = [...TASKS];
         this.manageComponent();
     }
     manageComponent() {
@@ -16,6 +17,9 @@ export class TaskList extends Component {
             var _a;
             (_a = document
                 .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', this.handleAdd.bind(this));
+            document
+                .querySelectorAll('.eraser')
+                .forEach((item) => item.addEventListener('click', this.handlerEraser.bind(this)));
         }, 100);
     }
     createTemplate() {
@@ -23,9 +27,11 @@ export class TaskList extends Component {
                 <h2>Tareas</h2>
                 <slot id="add-task"></slot>
                 <ul>`;
-        TASKS.forEach((item) => {
+        this.tasks.forEach((item) => {
             template += `
-            <li> ${item.id} - ${item.title} </li>`;
+            <li> ${item.id} - ${item.title} 
+            <span class="eraser" data-id="${item.id}">🗑️</span>
+            </li>`;
         });
         template += `</ul>
             </section>`;
@@ -36,7 +42,12 @@ export class TaskList extends Component {
         const title = document.querySelector('#title')
             .value;
         const responsible = document.querySelector('#resp').value;
-        TASKS.push(new Task(title, responsible));
+        this.tasks.push(new Task(title, responsible));
+        this.manageComponent();
+    }
+    handlerEraser(ev) {
+        const deletedID = ev.target.dataset.id;
+        this.tasks = this.tasks.filter((item) => item.id !== +deletedID);
         this.manageComponent();
     }
 }
