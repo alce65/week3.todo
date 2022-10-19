@@ -1,5 +1,8 @@
 export class Store<T> {
-    constructor(private store: string = 'Tasks') {}
+    // store: string;
+    constructor(public store: string = 'Tasks') {
+        // this.store = store
+    }
 
     getStore(): Array<T> {
         const dataString = localStorage.getItem(this.store);

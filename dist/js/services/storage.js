@@ -1,6 +1,8 @@
 export class Store {
+    // store: string;
     constructor(store = 'Tasks') {
         this.store = store;
+        // this.store = store
     }
     getStore() {
         const dataString = localStorage.getItem(this.store);
