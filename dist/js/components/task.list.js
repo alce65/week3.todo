@@ -2,6 +2,7 @@ import { TASKS } from '../models/data.js';
 import { Task } from '../models/task.js';
 import { AddTask } from './add.task.js';
 import { Component } from './component.js';
+import { ItemTask } from './item,task.js';
 export class TaskList extends Component {
     constructor(selector) {
         super();
@@ -13,11 +14,6 @@ export class TaskList extends Component {
         this.template = this.createTemplate();
         this.render(this.selector, this.template);
         new AddTask('slot#add-task', this.handleAdd.bind(this));
-        setTimeout(() => {
-            document
-                .querySelectorAll('.eraser')
-                .forEach((item) => item.addEventListener('click', this.handlerEraser.bind(this)));
-        }, 100);
     }
     createTemplate() {
         let template = `<section>
@@ -25,10 +21,8 @@ export class TaskList extends Component {
                 <slot id="add-task"></slot>
                 <ul>`;
         this.tasks.forEach((item) => {
-            template += `
-            <li> ${item.id} - ${item.title} 
-            <span class="eraser" data-id="${item.id}">🗑️</span>
-            </li>`;
+            template += new ItemTask('', item, this.handlerEraser.bind(this))
+                .template;
         });
         template += `</ul>
             </section>`;
@@ -42,9 +36,8 @@ export class TaskList extends Component {
         this.tasks.push(new Task(title, responsible));
         this.manageComponent();
     }
-    handlerEraser(ev) {
-        const deletedID = ev.target.dataset.id;
-        this.tasks = this.tasks.filter((item) => item.id !== +deletedID);
+    handlerEraser(deletedID) {
+        this.tasks = this.tasks.filter((item) => item.id !== deletedID);
         this.manageComponent();
     }
 }
