@@ -6,7 +6,8 @@ export class ItemTask extends Component {
     constructor(
         public selector: string,
         public item: Task,
-        public handleDelete: (id: number) => void
+        public handleDelete: (id: number) => void,
+        public handleChange: (id: number) => void
     ) {
         super();
         this.manageComponent();
@@ -21,13 +22,22 @@ export class ItemTask extends Component {
             ).addEventListener('click', () => {
                 this.handleDelete(this.item.id);
             });
+            (
+                document.querySelector(`#c${this.item.id}`) as HTMLElement
+            ).addEventListener('change', () => {
+                this.handleChange(this.item.id);
+            });
         }, 100);
     }
 
     createTemplate() {
         return `
-        <li> ${this.item.id} - ${this.item.title} 
-            <span id="i${this.item.id}" data-id="${this.item.id}">🗑️</span>
-            </li>`;
+        <li>
+            <input id="c${this.item.id}"
+            type="checkbox" ${this.item.isComplete ? 'checked' : ''}>
+            <span>${this.item.id}</span> -
+            <span>${this.item.title}</span>
+            <span class="button" id="i${this.item.id}">🗑️</span>
+        </li>`;
     }
 }
