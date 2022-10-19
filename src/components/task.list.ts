@@ -13,11 +13,8 @@ export class TaskList extends Component {
     manageComponent() {
         this.template = this.createTemplate();
         this.render(this.selector, this.template);
-        new AddTask('slot#add-task');
+        new AddTask('slot#add-task', this.handleAdd.bind(this));
         setTimeout(() => {
-            document
-                .querySelector('form')
-                ?.addEventListener('submit', this.handleAdd.bind(this));
             document
                 .querySelectorAll('.eraser')
                 .forEach((item) =>
@@ -45,7 +42,7 @@ export class TaskList extends Component {
         return template;
     }
     handleAdd(ev: Event) {
-        ev.preventDefault();
+        // ev.preventDefault();
         const title = (document.querySelector('#title') as HTMLInputElement)
             .value;
         const responsible = (
