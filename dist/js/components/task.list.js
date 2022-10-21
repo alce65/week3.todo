@@ -7,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Task } from '../models/task.js';
 import { Store } from '../services/storage.js';
 import { TaskApi } from '../services/task.api.js';
 import { AddTask } from './add.task.js';
@@ -60,18 +59,33 @@ export class TaskList extends Component {
         const title = document.querySelector('#title')
             .value;
         const responsible = document.querySelector('#resp').value;
-        this.tasks.push(new Task(title, responsible));
-        this.storeService.setStore(this.tasks);
-        this.manageComponent();
+        // const newTask = new Task(title, responsible)
+        const newTask = {
+            title,
+            responsible,
+            isComplete: false,
+        };
+        this.api.createTask(newTask).then((task) => {
+            this.tasks.push(task);
+            // this.storeService.setStore(this.tasks);
+            this.manageComponent();
+        });
     }
     handlerEraser(deletedID) {
-        this.tasks = this.tasks.filter((item) => item.id !== deletedID);
-        this.storeService.setStore(this.tasks);
-        this.manageComponent();
+        this.api.deleteTask(deletedID).then((response) => {
+            if (response.ok) {
+                this.tasks = this.tasks.filter((item) => item.id !== deletedID);
+                // this.storeService.setStore(this.tasks);
+                this.manageComponent();
+            }
+        });
     }
     handlerComplete(changeID) {
         const i = this.tasks.findIndex((item) => item.id === changeID);
-        this.tasks[i].isComplete = !this.tasks[i].isComplete;
-        this.storeService.setStore(this.tasks);
+        const newState = !this.tasks[i].isComplete;
+        this.api.updateTask(changeID, { isComplete: newState }).then((task) => {
+            this.tasks[i].isComplete = task.isComplete;
+        });
+        // this.storeService.setStore(this.tasks);
     }
 }

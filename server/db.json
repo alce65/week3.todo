@@ -18,7 +18,7 @@
             "age": 33
         },
         {
-            "name": "Ernesto",
+            "name": "Luisa",
             "age": 43,
             "id": 2
         }
@@ -80,19 +80,19 @@
             "title": "Estudiar",
             "responsible": "Ernesto",
             "id": 1,
-            "isComplete": true
+            "isComplete": false
         },
         {
             "title": "Dormir",
             "responsible": "Pepe",
             "id": 2,
-            "isComplete": false
+            "isComplete": true
         },
         {
-            "title": "Ir al parque",
-            "responsible": "Elena",
-            "id": 3,
-            "isComplete": false
+            "title": "Hacer Pokemones",
+            "responsible": "Todos",
+            "isComplete": false,
+            "id": 3
         }
     ]
 }

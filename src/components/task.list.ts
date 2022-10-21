@@ -1,5 +1,5 @@
 import { TASKS } from '../models/data.js';
-import { Task } from '../models/task.js';
+import { ITask, Task } from '../models/task.js';
 import { Store } from '../services/storage.js';
 import { TaskApi } from '../services/task.api.js';
 import { AddTask } from './add.task.js';
@@ -67,20 +67,35 @@ export class TaskList extends Component {
         const responsible = (
             document.querySelector('#resp') as HTMLInputElement
         ).value;
-        this.tasks.push(new Task(title, responsible));
-        this.storeService.setStore(this.tasks);
-        this.manageComponent();
+        // const newTask = new Task(title, responsible)
+        const newTask: ITask = {
+            title,
+            responsible,
+            isComplete: false,
+        };
+        this.api.createTask(newTask).then((task) => {
+            this.tasks.push(task);
+            // this.storeService.setStore(this.tasks);
+            this.manageComponent();
+        });
     }
 
     handlerEraser(deletedID: number) {
-        this.tasks = this.tasks.filter((item) => item.id !== deletedID);
-        this.storeService.setStore(this.tasks);
-        this.manageComponent();
+        this.api.deleteTask(deletedID).then((response) => {
+            if (response.ok) {
+                this.tasks = this.tasks.filter((item) => item.id !== deletedID);
+                // this.storeService.setStore(this.tasks);
+                this.manageComponent();
+            }
+        });
     }
 
     handlerComplete(changeID: number) {
         const i = this.tasks.findIndex((item) => item.id === changeID);
-        this.tasks[i].isComplete = !this.tasks[i].isComplete;
-        this.storeService.setStore(this.tasks);
+        const newState = !this.tasks[i].isComplete;
+        this.api.updateTask(changeID, { isComplete: newState }).then((task) => {
+            this.tasks[i].isComplete = task.isComplete;
+        });
+        // this.storeService.setStore(this.tasks);
     }
 }
