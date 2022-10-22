@@ -11,7 +11,7 @@ export class Footer extends Component {
     }
     createTemplate() {
         return `
-         <footer class="${styles.footer}"
+        <footer class="${styles.footer}"
             <address>ISDI COders</address>
         </footer>
         `;

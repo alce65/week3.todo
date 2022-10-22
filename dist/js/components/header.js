@@ -10,7 +10,7 @@ export class Header extends Component {
     }
     createTemplate() {
         return `
-         <header>
+        <header>
             <h1>TODO List</h1>
             <slot></slot>
         </header>
